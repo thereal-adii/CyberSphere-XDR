@@ -1,0 +1,26 @@
+[
+  {
+    "event_id": "EVT-0001",
+    "timestamp": "2026-08-03T10:00:00",
+    "source_ip": "192.168.56.101",
+    "destination_ip": "192.168.56.10",
+    "hostname": "ubuntu-server",
+    "username": "admin",
+    "event_type": "Failed Login",
+    "severity": "Medium",
+    "description": "Multiple failed SSH login attempts",
+    "mitre_technique": "T1110"
+  },
+  {
+    "event_id": "EVT-0002",
+    "timestamp": "2026-08-03T10:03:00",
+    "source_ip": "192.168.56.101",
+    "destination_ip": "192.168.56.10",
+    "hostname": "ubuntu-server",
+    "username": "admin",
+    "event_type": "Successful Login",
+    "severity": "High",
+    "description": "SSH authentication successful",
+    "mitre_technique": "T1078"
+  }
+]
