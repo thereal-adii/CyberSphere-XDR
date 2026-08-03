@@ -1,40 +1,33 @@
-import networkx as nx
-
-from .nodes import GraphNode
-from .edges import GraphEdge
+from prototype.graph_engine.nodes import GraphNode
+from prototype.graph_engine.edges import GraphEdge
 
 
 class AttackGraph:
 
     def __init__(self):
-        self.graph = nx.DiGraph()
+        self.nodes = {}
+        self.edges = []
 
     def add_node(self, node: GraphNode):
-        self.graph.add_node(
-            node.node_id,
-            type=node.node_type,
-            label=node.label,
-        )
+        self.nodes[node.node_id] = node
 
     def add_edge(self, edge: GraphEdge):
-        self.graph.add_edge(
-            edge.source,
-            edge.target,
-            relationship=edge.relationship,
-        )
+        self.edges.append(edge)
 
     def summary(self):
         print("\nCyberSphere Attack Graph\n")
 
-        print(f"Nodes : {self.graph.number_of_nodes()}")
-        print(f"Edges : {self.graph.number_of_edges()}")
+        print(f"Nodes : {len(self.nodes)}")
+        print(f"Edges : {len(self.edges)}")
 
         print("\nNode List")
 
-        for node, data in self.graph.nodes(data=True):
-            print(f"- {node} ({data['type']})")
+        for node in self.nodes.values():
+            print(f"- {node.label} ({node.node_type})")
 
         print("\nRelationships")
 
-        for source, target, data in self.graph.edges(data=True):
-            print(f"{source} --[{data['relationship']}]--> {target}")
+        for edge in self.edges:
+            print(
+                f"{edge.source} --[{edge.relationship}]--> {edge.target}"
+            )

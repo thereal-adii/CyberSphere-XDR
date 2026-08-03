@@ -6,48 +6,48 @@ from prototype.models import SecurityEvent
 
 class GraphBuilder:
 
-    def __init__(self):
-        self.graph = AttackGraph()
+    def build(self, events: list[SecurityEvent]):
 
-    def process_event(self, event: SecurityEvent):
+        graph = AttackGraph()
 
-        source = GraphNode(
-            node_id=event.source_ip,
-            node_type="ip_address",
-            label=event.source_ip,
-        )
+        for event in events:
 
-        destination = GraphNode(
-            node_id=event.destination_ip,
-            node_type="host",
-            label=event.hostname,
-        )
-
-        security_event = GraphNode(
-            node_id=event.event_id,
-            node_type="security_event",
-            label=event.event_type,
-        )
-
-        self.graph.add_node(source)
-        self.graph.add_node(destination)
-        self.graph.add_node(security_event)
-
-        self.graph.add_edge(
-            GraphEdge(
-                source.node_id,
-                security_event.node_id,
-                "generated",
+            source = GraphNode(
+                node_id=event.source_ip,
+                node_type="IP",
+                label=event.source_ip,
             )
-        )
 
-        self.graph.add_edge(
-            GraphEdge(
-                security_event.node_id,
-                destination.node_id,
-                "targeted",
+            destination = GraphNode(
+                node_id=event.destination_ip,
+                node_type="Host",
+                label=event.destination_ip,
             )
-        )
 
-    def get_graph(self):
-        return self.graph
+            event_node = GraphNode(
+                node_id=event.event_id,
+                node_type="Event",
+                label=event.event_type,
+            )
+
+            graph.add_node(source)
+            graph.add_node(destination)
+            graph.add_node(event_node)
+
+            graph.add_edge(
+                GraphEdge(
+                    source.source_id if False else source.node_id,
+                    event_node.node_id,
+                    "generated",
+                )
+            )
+
+            graph.add_edge(
+                GraphEdge(
+                    event_node.node_id,
+                    destination.node_id,
+                    "targeted",
+                )
+            )
+
+        return graph
