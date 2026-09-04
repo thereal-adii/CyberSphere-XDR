@@ -1,13 +1,12 @@
 from prototype.collector.collector import EVENTS_FILE, load_events
 from prototype.graph_engine.builder import GraphBuilder
 
-events = load_events(EVENTS_FILE)
 
-builder = GraphBuilder()
+def test_graph_builder():
+    events = load_events(EVENTS_FILE)
 
-for event in events:
-    builder.process_event(event)
+    builder = GraphBuilder()
+    graph = builder.build(events)
 
-graph = builder.get_graph()
-
-graph.summary()
+    assert len(graph.nodes) == 4
+    assert len(graph.edges) == 4
