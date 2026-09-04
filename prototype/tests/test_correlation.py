@@ -1,20 +1,13 @@
 from prototype.collector.collector import EVENTS_FILE, load_events
 from prototype.correlation.correlation_engine import CorrelationEngine
 
-events = load_events(EVENTS_FILE)
 
-engine = CorrelationEngine()
+def test_correlation():
+    events = load_events(EVENTS_FILE)
 
-groups = engine.correlate(events)
+    engine = CorrelationEngine()
+    incidents = engine.correlate(events)
 
-print("\nCyberSphere Correlation Engine\n")
-
-for key, event_list in groups.items():
-    print("=" * 60)
-    print(f"Source      : {key[0]}")
-    print(f"Destination : {key[1]}")
-    print(f"Username    : {key[2]}")
-    print(f"Events      : {len(event_list)}")
-
-    for event in event_list:
-        print(f"  - {event.event_type}")
+    assert len(incidents) == 1
+    assert incidents[0].incident_id == "INC-0001"
+    assert incidents[0].event_count == 2
